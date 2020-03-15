@@ -1,0 +1,138 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/avatar.png"><link rel="alternate" type="application/rss+xml" title="faceair 的博客" href="https://faceair.me/atom.xml"><link rel="stylesheet" href="/styles.css"><title>标签：PHP | faceair 的博客</title></head><body><div class="container"><div class="columns page-header"><h1>faceair 的博客</h1></div><div class="columns"><div class="navigation clearfix"><nav class="left"><a href="/" class="favicon"><img alt="faceair 的博客" src="/avatar.png"></a><a href="/">首页</a><a href="/about-me/">关于我</a></nav><nav class="right"><a href="/atom.xml">RSS</a></nav></div></div><div class="columns"><div class="block-body column three-fourths"><div class="archive-title"><strong>标签 #PHP</strong></div><article><header><h2><a href="/2013/03/18/PHP还原强智教务管理信息系统加密过程/">PHP还原强智教务管理信息系统加密过程</a></h2></header><div class="article-meta clearfix"><time class="left">2013 年 3 月 18 日</time><ul class="tags left"></ul><ul class="tags right"><li><a href="/tags/php/">PHP</a></li></ul></div><div class="markdown-body"><p><a href="http://jybox.net/220-%E5%B0%86%E4%B8%80%E6%AE%B5js%E5%92%8Casp%E8%BD%AC%E6%8D%A2%E6%88%90php" target="_blank" rel="noopener">求助帖</a>，还是自己解决了。</p>
+<p><strong>概述</strong></p>
+<p>教务系统地址<a href="http://jwxt.whsw.cn/" target="_blank">http://jwxt.whsw.cn/</a>，你会发现登陆只能用ie浏览器，他喵的chrome和firefox都不支持。用其他浏览器登录时会提示密码错误，原因是他会先在前端加密密码再跟服务器通讯。而加密用的js和vbs，其他浏览器都只能js加密，vbs加密过程就不支持了，所以加密不完全导致提示密码错误。唉，这套系统也太老了，最后更新还是2005年，无力吐槽。</p>
+<p><strong>js加密还原</strong></p>
+<p>原过程</p>
+<pre><code>var pwd = theform.PassWord.value;
+var rndNum = 394058;
+rndNum = rndNum.toString();
+var curPos = 0;
+var tmpStr,EnCryptStr = &quot;&quot;;
+for(Cnt=0;Cnt&lt;pwd.length;Cnt++){
+  if(Cnt % rndNum.length == 0 ) curPos = 0;
+ tmpStr = pwd.substring(Cnt,Cnt+1);
+  EnCryptStr += String.fromCharCode(tmpStr.charCodeAt(0) - Cnt - rndNum.substring(curPos,curPos+1));
+  curPos +=1;
+}
+theform.PassWord.value = EnCryptStr;//Assigned the EncryptPassword value to the PassWord TextFiled
+theform.EnRndNum.value = rndNum;
+</code></pre><p>用php还原</p>
+<pre><code>$pwd = &quot;&quot;;
+$rndNum = &quot;394058&quot;;
+$curPos = 0;
+$tmpStr = &quot;&quot;;
+$EnCryptStr = &quot;&quot;;
+for($Cnt=0;$Cnt&amp;amp;lt;strlen($pwd);$Cnt++)
+  {
+   if($Cnt % strlen($rndNum) == 0 ) $curPos = 0;
+   $tmpStr = substr($pwd,$Cnt,1);
+    $EnCryptStr = $EnCryptStr. fromCharCode(charCodeAt($tmpStr) - $Cnt - substr($rndNum,$curPos,1));
+                      $curPos +=1;
+  }
+echo $EnCryptStr;
+echo &apos;&apos;&amp;amp;lt;br&amp;amp;gt;&apos;&apos;;
+echo $rndNum;
+echo &apos;&apos;&amp;amp;lt;br&amp;amp;gt;&apos;&apos;;
+echo EncryptString($EnCryptStr);
+
+function fromCharCode($codes) {
+  if (is_scalar($codes)) $codes= func_get_args();
+  $str= &apos;&apos;&apos;&apos;;
+  foreach ($codes as $code) $str.= chr($code);
+  return $str;
+}
+
+function charCodeAt($word) {
+  if (is_array($word))
+    $arr = $word;
+  else
+    $arr = str_split($word);
+  $bin_str = &apos;&apos;&apos;&apos;;
+  foreach ($arr as $value)
+    $bin_str .= decbin(ord($value));
+  $bin_str = preg_replace(&apos;&apos;/^.{4}(.{4}).{2}(.{6}).{2}(.{6})$/&apos;&apos;,&apos;&apos;$1$2$3&apos;&apos;, $bin_str);
+  return bindec($bin_str);
+}
+</code></pre><p><strong>vbs加密还原</strong></p>
+<p>原函数</p>
+<pre><code>Function EncryptString(InputText , ThePassword )&apos;&apos;用户口令加密
+  Dim il_bit, il_x, il_y, il_z, il_len, i
+  Dim is_out
+  Password = InputText
+  il_len = Len(Password)
+  il_x = 0
+  il_y = 0
+  is_out = &quot;&quot;
+
+  For i = 1 To il_len
+    il_bit = AscW(Mid(Password, i, 1)) &apos;&apos;W系列支持unicode
+    il_y = (il_bit * 13 Mod 256) + il_x
+    is_out = is_out &amp;amp; ChrW(Fix(il_y)) &apos;&apos;取整 int和fix区别: fix修正负数
+    il_x = il_bit * 13 / 256
+  Next
+
+  is_out = is_out &amp;amp; ChrW(Fix(il_x))
+  Password = is_out
+  il_len = Len(Password)
+  il_x = 0
+  il_y = 0
+  is_out = &quot;&quot;
+
+  For i = 1 To il_len
+    il_bit = AscW(Mid(Password, i, 1)) &apos;&apos;取前4位值
+   il_y = il_bit / 16 + 64
+    is_out = is_out &amp;amp; ChrW(Fix(il_y)) &apos;&apos;取后4位值
+    il_y = (il_bit Mod 16) + 64
+    is_out = is_out &amp;amp; ChrW(Fix(il_y))
+  Next
+
+  EncryptString = is_out
+  End Function
+}
+</code></pre><p>用php还原</p>
+<pre><code>function EncryptString($Password){    //密码前端加密部分
+  $il_len = strlen($Password);
+  $il_x = 0;
+  $il_y = 0;
+  $is_out = &quot;&quot;;
+
+ for($i=0;$i&lt; $il_len;$i++){
+   $il_bit = ord(substr($Password, $i, 1));
+    $il_y = ($il_bit * 13 % 256) + $il_x;
+   $is_out = $is_out. Chr(fix($il_y));
+   $il_x = $il_bit * 13 / 256;
+ }
+
+ $is_out = $is_out. Chr(fix($il_x));
+ $Password = $is_out;
+  $il_len = strlen($Password);
+  $il_x = 0;
+  $il_y = 0;
+  $is_out = &quot;&quot;;
+
+ for($i=0;$i&lt;$il_len;$i++){
+    $il_bit = ord(substr($Password, $i, 1));
+    $il_y = $il_bit / 16 + 64;
+          $is_out = $is_out. Chr(fix($il_y));
+    $il_y = ($il_bit % 16) + 64;
+          $is_out = $is_out. Chr(fix($il_y));
+
+  }
+
+ return $is_out;
+}
+
+function fix($il_y) {
+ if(floor($il_y) &lt; 0){
+    return floor($il_y)+1;
+  }else{
+    return floor($il_y);
+  }
+}
+</code></pre><p>自此php就完美还原了两个加密过程，再模拟登陆就简单了。<br>他喵的调试一下午啊啊啊啊啊、、、</p>
+<ul>
+<li>2013.7.06 更新 第二段加密函数里面floor不能完全还原fix函数，所以自定义fix函数。</li>
+</ul>
+</div></article><div class="archive-pagination"><div class="paginator"><span class="page-number current">1</span></div></div></div><div class="block-sidebar column one-fourth"><div class="widget tags"><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/summary/">总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/speech/">讲稿</a></li></ul></div><div class="widget archives"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">三月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li></ul></div><div class="widget text-content"><p>博客内容使用&nbsp;<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn">CC BY-NC-SA 3.0</a>&nbsp;授权发布。
+<br>
+Powered&nbsp;by&nbsp;<a href="http://hexo.io">Hexo</a>&nbsp;&&nbsp;<a href="https://github.com/jysperm/hexo-theme-simpleblock">SimpleBlock</a>&nbsp;.</p></div></div></div></div></body></html>

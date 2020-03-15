@@ -1,0 +1,80 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/avatar.png"><link rel="alternate" type="application/rss+xml" title="faceair 的博客" href="https://faceair.me/atom.xml"><link rel="stylesheet" href="/styles.css"><title>Hour of code 讲稿 | faceair 的博客</title></head><body><div class="container"><div class="columns page-header"><h1>faceair 的博客</h1></div><div class="columns"><div class="navigation clearfix"><nav class="left"><a href="/" class="favicon"><img alt="faceair 的博客" src="/avatar.png"></a><a href="/">首页</a><a href="/about-me/">关于我</a></nav><nav class="right"><a href="/atom.xml">RSS</a></nav></div></div><div class="columns"><div class="block-body column three-fourths"><article><header><h2>Hour of code 讲稿</h2></header><div class="article-meta clearfix"><time class="left">2015 年 5 月 13 日</time><ul class="tags left"></ul><ul class="tags right"><li><a href="/tags/speech/">讲稿</a></li></ul></div><div class="markdown-body"><blockquote>
+<p>这是5月7日图书馆 <code>Hour of code</code> 活动的讲稿。讲稿大量参考了<a href="https://jysperm.me/" target="_blank" rel="noopener">精子的博客</a>，感谢~</p>
+</blockquote>
+<p>各位学弟学妹好，我叫熊豹。现在大三，是建筑系土木工程专业的学生，同时也在一家互联网创业公司里面远程实习。<br>非常高兴能在这里跟大家分享一些经验和想法，希望能对你们有所帮助。</p>
+<p>我开始接触编程的时间不算太早，高三左右开始写代码，到现在差不多四五年的样子。<br>现在主力语言 Node.js，以前用过一段时间 PHP，加起来写了十几万行的代码。<br>独立完成过一些大大小小的项目，写过 web 框架、DNS 服务器、反向代理、网盘、验证码识别、爬虫等等。<br>你们应该都有用我们学校的微信公众号查分吧？那个也是我写的。<br>接触的东西不少，也踩了了很多坑，走了很多弯路。</p>
+<hr>
+<h2 id="观念"><a href="#观念" class="headerlink" title="观念"></a>观念</h2><p>在座的各位在学习编程的时候，我希望大家能先树立这样一些观念：</p>
+<ol>
+<li><p>接入世界性互联网</p>
+<p>因为一些总所周知的原因，我们并不能自由地浏览一些网站。而我们在查找资料的时候，这将给我们带来非常大的困扰。<br>你可以找人要个 VPN 或者尝试使用 GoAgent，或者选择购买曲径、GreenShadow。</p>
+</li>
+<li><p>版权意识</p>
+<p>你要认识到，如果你打算在计算机领域进行一些创造，那么维护版权，就是在维护你自己将来的利益，请试着去影响身边的更多人。<br>可能你因为种种原因无法购买正版软件，但至少请认识到这是对作者利益的一种损害。</p>
+</li>
+<li><p>从官方渠道下载文件，获取信息</p>
+<p>也许是因为一直用盗版，很多人没有养成从官网下载软件的习惯，出了问题也想不到去求助官方客服。<br>很多人查找资料不喜欢去官网，而喜欢看个人博客或总结，这样在信息的传递过程中可能会出现偏差。或者原作者对官方的文档做了一些更正而你的信息来源没有及时更正，也可能造成一些误差。</p>
+<p>不管你信不信，这是避免出现问题，解决问题的最方便，有效的手段。<br>毫无疑问从官网得到的信息是最权威的，这在解决问题和与别人辩论的时候都很有用。</p>
+</li>
+<li><p>扔掉旧东西</p>
+<p>扔掉那些旧的，官方已经不再推荐或提供支持的东西，比如 IE6, WinXP, VC++6.0, VB6..<br>一定会有新的更好用的替代品的，如果没有的话可以考虑自己创造一个。</p>
+</li>
+<li><p>使用 Google</p>
+<p>Google 会让官网出现在第一个，跟上上条观点相承，官方渠道更值得信赖。<br>Google 会包含英文的搜索结果，这个时候不要害怕不要怂，即使你不懂英文，但很多问题只需一句话，一个词就能解决，你能搞定的。</p>
+</li>
+<li><p>学会Debug</p>
+<p>当你程序出BUG的时候最重要的是报错信息，读懂它将对你解决问题非常有帮助。你可以直接搜索报错信息，或者简要描述你的问题再搜索。有时候并不能搜到合适的结果，可以尝试用英文描述下你的问题再搜索。<br>你用到的可能是一个再 Github 上的开源组件，这时候去搜一下它的 issues 可能会有所收获。如果找不到相关 issues，那你可以考虑去阅读你所用的开源组件的代码，断点调试一下。</p>
+</li>
+<li><p>学会提问</p>
+<p>如果无法通过搜索解决问题时，那么就需要去社区提问，在此之前你有必要学习一下提问的智慧。如果是 Github 上的开源项目，可以直接新开一个 issue。<br>尽量不要在 QQ 或邮件上单独向别人提问，尤其是搜索就能解决的问题，因为这样的话，别人无法搜索到你最后解决问题的经验，而且对方欢迎不欢迎你的提问还说不定。</p>
+</li>
+<li><p>多阅读</p>
+<p>无论是在网上还是图书馆，你都应该在你研究的领域多读一些书和文章。书籍的内容是经过精心的安排的，它的目标就是供人阅读。<br>不一定什么时候就会派上用场，你可能记不住文章的所有内容，但只需记住几个关键词，在要用到的时候你就可以重新找到这篇文章。</p>
+</li>
+<li><p>将自己的作品展示给大家看</p>
+<p>如果仅仅是练习的作品，没有什么商业机密，自己藏着不如发出来给大家看。你可以到 Github 上开源自己的代码，也给更多后来的人一些参考。</p>
+<p>同时对你自己也是一种压力，因为要展示给大家，所以你要让作品尽可能完美，不给自己丢脸。你也可以去参考代码质量较高开源项目不断完善自己的项目。一步一个脚印，也是自己成长的见证。<br>如果你的业余项目代码质量很高，对你将来找工作也是一种帮助。</p>
+</li>
+</ol>
+<hr>
+<h2 id="学习"><a href="#学习" class="headerlink" title="学习"></a>学习</h2><p>我现在所想讲的不仅仅是编程，包括整个计算机和互联网领域。</p>
+<p>现在互联网进入我们的生活，遍布世界的每一个角落，连接着世界上几十亿的设备，能让任何人在半秒之内，联结世界上任意两点。<br>当你在 QQ 上发出一条消息时，它会在光纤中穿过大半个中国，经过十几个路由的转发，调用若干台服务器，最后在不到一秒内被对方看到。</p>
+<p>计算机和互联网可以算是由全人类共同构建的，最精密也是最庞大的工程。<br>每一个芯片都是在纳米级被雕刻而成的，容不得哪怕一粒灰尘的差错。<br>无数黑客、恐怖分子对互联网虎视眈眈，但它仍健壮地运作，支撑着整个世界的信息传递。</p>
+<p>计算机还是一个几乎全新的学科，仅 60 年历史，而互联网更是仅仅 30 年。<br>硬件在以摩尔定律预测的那样每年翻一番，而软件方面也在不断更新迭代，没人知道计算机领域今后会发展成怎样。<br>相比于已经十分稳定的学科，计算机还在快速发展，有更多的变数，也有着更多可能取得突破的机会。</p>
+<p>而我们就处在这样一个机遇与挑战并存的时代，一不小心就会被急剧发展的时代所抛弃。<br>为了跟上发展脚步，我们只有不断地学习，扔掉旧的过时的知识，拥抱新的变化。</p>
+<p>现在老师在课堂上教的东西，可能是过去四五年流行过的工具或者语言，现在可能已经有了更好地东西来替代或者已经被替代好几代了。</p>
+<p>我举个简单的例子，前端开发。</p>
+<p>我之前上过几次我们学校的课，课堂上还停留在table布局的层次上。而现在你们知道前沿的前端发展成什么样子了吗？</p>
+<p>div 布局？你们啊，还是 too young。</p>
+<p>这几年浏览器大换血，Chrome 一统江湖(包括含 Chromium 内核的国产双核浏览器)，新的 V8 引擎大幅度提高了前端 JavaScript 的运行效率。<br>前端中 JavaScript 占的比重也越来越大，之前还只是 JavaScript 作为辅助页面的交互语言存在，而现在则完全成了前端的主角。<br>甚至前端逐渐跟后端分离开来，也不需要后端来渲染页面，而只用提供数据，由 JavaScript 来完成渲染。</p>
+<p>随着大家对审美和用户体验的要求越来越高，每个页面单独渲染的模式已经无法满足日益增长的需求了。<br>如果点个赞要刷新一次网页，打开评论要打开新的网页，关注一个人要打开一个新的网页，这样的交互你受得了么？</p>
+<p>前端现在也发展出了 MVC、MVVM 等等概念，也出现了大量的 JavaScript 框架比如 angularjs、avalon、backbone、React 等等，甚至可以写独立应用。<br>有心的同学可以回去打开新浪微博首页的源代码看看，主体部分除了 script 标签以外已经没有其他标签了。<br>我们公司的产品番茄土豆的也是完全的前后端分离的典范。(<strong>插播一条广告，番茄土豆是番茄工作法和 todo list 结合一个效率类软件，客户端全平台覆盖，有兴趣的同学可以试用一下</strong>)<br>手机上的淘宝、美团外卖、知乎和手机 QQ 部分页面也都使用了前端技术构建。</p>
+<p>这些都是近两年发生的变化。</p>
+<p>我前面说了很多变化，那么我们的学习中就没有什么是不变的么？<br>当然也不是，程序是算法+数据结构，这些都是基本功。基本功还包括计算机原理、计算机网络、编译原理等等。<br>一般基础打好，学习新的东西也会很快，不用太过于担心。</p>
+<p>我这里只是提醒你们知识是学不完的，技术也在不断地进化，要时刻保持学习的心态。</p>
+<hr>
+<h2 id="Node-js"><a href="#Node-js" class="headerlink" title="Node.js"></a>Node.js</h2><p>接下来一部分我想讲一讲 Node.js。</p>
+<p>Nodejs 自从 2009 年发布，因其出色的性能和开放的姿态一直备受关注。</p>
+<p>阿里巴巴是应该是国内最先大规模使用 Node.js 的公司，在 2011 年的时候就开始在淘宝指数、数据魔方以及淘宝时光机等栏目上开始使用。<br>而在去年淘宝开始实时前后端分离计划，Node.js 作为数据中间层占了一个很重要的地位。现在我的淘宝、淘宝收藏夹、商品详情页、天猫首页、天猫会员、天猫电器城已经在使用 Node.js 了，未来还会有更多业务会迁移到 Node.js 上面。</p>
+<p>除了淘宝以外，还有百度、网易以及一些创业公司比如知乎、teambition、花瓣网、番茄土豆(我司)在尝试用 Node.js 构建他们的产品。</p>
+<p>听到到 Node.js 这个名字，初学者可能会误以为这是一个 JavaScript 应用。事实上， Node.js 采用 C++ 编写而成，是一个 JavaScript 的运行环境。</p>
+<p>为什么采用C++语言呢？据 Node.js 创始人 Ryan Dahl 回忆，他最初希望采用 Ruby 来写 Node.js，但是后来发现 Ruby 虚拟机的性能不能满足他的要求，后来他尝试采用 V8 引擎，所以选择了 C++。</p>
+<p>既然不是 JavaScript 应用，为何叫 .js 呢？因为 Node.js 是一个 JavaScript 的运行环境。提到 JavaScript，大家首先想到的是日常使用的浏览器，现代浏览器包含了各种组件，包括渲染引擎、JavaScript 引擎等，其中 JavaScript 引擎负责解释执行网页中的 JavaScript 代码。</p>
+<p>作为 Web 前端最重要的语言之一，JavaScript 一直是前端工程师的专利。不过，Node.js 是一个后端的 JavaScript 运行环境（支持的系统包括 *unix、Windows），这意味着你可以编写系统级或者服务器端的 JavaScript 代码，交给 Node.js 来解释执行。</p>
+<p>Node.js 采用了 Google Chrome 浏览器的 V8 引擎，性能很好，同时还提供了很多系统级的 API ，如文件操作、网络编程等。浏览器端的 JavaScript 代码在运行时会受到各种安全性的限制，对客户系统的操作有限。相比之下，Node.js 则是一个全面的后台运行环境，为 JavaScript 提供了其他语言能够实现的许多功能。</p>
+<p>Node.js 的设计思想中以事件驱动为核心，它提供的绝大多数 API 都是基于事件的、异步的风格。以 Net 模块为例，其中的 net.Socket 对象就有以下事件：connect、data、end、timeout、error、close 等，使用 Node.js 的开发人员需要根据自己的业务逻辑注册相应的回调函数。这些回调函数都是异步执行的，这意味着虽然在代码结构中，这些函数看似是依次注册的，但是它们并不依赖于自身出现的顺序，而是等待相应的事件触发。</p>
+<p>事件驱动、异步编程的设计，重要的优势在于，充分利用了系统资源，执行代码无须阻塞等待某种操作完成，有限的资源可以用于其他的任务。此类设计非常适合于后端的网络服务编程，Node.js 的目标也在于此。在服务器开发中，并发的请求处理是个大问题，阻塞式的函数会导致资源浪费和时间延迟。通过事件注册、异步函数，开发人员可以提高资源的利用率，性能也会改善。</p>
+<p>Node.js 在设计上也是比较大胆，它以单进程、单线程模式运行，这和 JavaScript 的运行方式一致，事件驱动机制是 Node.js 通过内部单线程高效率地维护事件循环队列来实现的，没有多线程的资源占用和上下文切换，这意味着面对大规模的 http 请求，Node.js 凭借事件驱动搞定一切。</p>
+<p>性能是 Node.js 的优势之一，还有一个很重要的优势是强大的社区支持，大家都非常愿意分享自己的代码和知识经验。</p>
+<p>NPM 是 Node.js 的包管理器，这里我说的包是指别人封装好的独立的模块。<br>NPM 平台上的第三方模块超过 14W，在去年6月超越 Maven Central (Java) 和 gem (ruby) 成为了最大的包管理平台，这两个平台上的的模块数量现在刚过 10W 大关，还有一些其他语言的包管理器，比如 PHP、.Net、Go 上面的包都远不到 10W。<br>除了包的数量以外，包的下载量更是惊人，现在每天NPM平台上的下载量就有几千万，每个月更是有十几亿的下载量。</p>
+<p>一般的 Node.js 项目都会依赖几个或者几十个第三方模块，大大降低了重复劳动，提高了工作效率。<br>而你在开发的过程中，有一些很好的封装也可以很简单得发布出来，回馈社区方便他人。</p>
+<p>Node.js 现在发展势头正猛，有兴趣的同学可以回去自己再查查相关资料。</p>
+<p>参考:</p>
+<ul>
+<li><a href="https://jysperm.me/2013/02/%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BA%E4%B8%80%E5%90%8DGeek/" target="_blank" rel="noopener">如何成为一名Geek</a></li>
+<li><a href="https://jysperm.me/2013/06/1110/" target="_blank" rel="noopener">编程之美</a></li>
+<li><a href="http://www.infoq.com/cn/articles/what-is-nodejs" target="_blank" rel="noopener">深入浅出Node.js（一）：什么是Node.js</a></li>
+</ul>
+</div></article></div><div class="block-sidebar column one-fourth"><div class="widget tags"><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/summary/">总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/speech/">讲稿</a></li></ul></div><div class="widget archives"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">三月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li></ul></div><div class="widget text-content"><p>博客内容使用&nbsp;<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn">CC BY-NC-SA 3.0</a>&nbsp;授权发布。
+<br>
+Powered&nbsp;by&nbsp;<a href="http://hexo.io">Hexo</a>&nbsp;&&nbsp;<a href="https://github.com/jysperm/hexo-theme-simpleblock">SimpleBlock</a>&nbsp;.</p></div></div></div></div></body></html>

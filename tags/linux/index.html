@@ -1,0 +1,64 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/avatar.png"><link rel="alternate" type="application/rss+xml" title="faceair 的博客" href="https://faceair.me/atom.xml"><link rel="stylesheet" href="/styles.css"><title>标签：Linux | faceair 的博客</title></head><body><div class="container"><div class="columns page-header"><h1>faceair 的博客</h1></div><div class="columns"><div class="navigation clearfix"><nav class="left"><a href="/" class="favicon"><img alt="faceair 的博客" src="/avatar.png"></a><a href="/">首页</a><a href="/about-me/">关于我</a></nav><nav class="right"><a href="/atom.xml">RSS</a></nav></div></div><div class="columns"><div class="block-body column three-fourths"><div class="archive-title"><strong>标签 #Linux</strong></div><article><header><h2><a href="/2014/02/28/解决 elementory os 频繁卡死/">解决 elementory os 频繁卡死</a></h2></header><div class="article-meta clearfix"><time class="left">2014 年 2 月 28 日</time><ul class="tags left"></ul><ul class="tags right"><li><a href="/tags/linux/">Linux</a></li></ul></div><div class="markdown-body"><p>真是被折腾死了，要看解决办法请直接跳到结尾。。</p>
+<p>年前的时候eos就是这样频繁卡死，tty调不出来，鼠标界面卡住不动。自己又找不到啥原因，最后干脆卸载了eos，转战其他发行版。期间因为不知道u盘有问题，换了N个发行版装了几十遍都失败的过程不表（ = = ），最后在精子大大的指导下才换了个u盘搞定了。</p>
+<p>可是习惯了eos的桌面以后用其他的都不怎么习惯，都没有eos的漂亮/流畅（卡死不算 = = ）。特别是eos可以自己设置桌面热区，比如我的鼠标滑到右上角预览所有窗口/右下角最小化当前窗口/左下角切换工作区，一系列操作都特别炫酷。</p>
+<p>好吧好吧所以呢，我最后还是重装了elementory os。前一段时间在家里用起来都没啥大问题，最近eos又开始抽风了，又是动不动卡死，完全不能忍啊。有时候在听歌，有时候在刷网页，然后突然卡死就只能长按电源键强制重启了。</p>
+<p>昨天在v2ex看到有人说<a href="http://www.v2ex.com/t/102044" target="_blank" rel="noopener">chrome占用内存的问题</a>，我才检查我的chromium内存。然后我发现这货特别占资源啊，cpu经常50%+，内存也是几百兆。最后我决定对它下手了。</p>
+<p>我先禁用chromium了大部分扩展，只留了两个（SwitchySharp和any.do）。本以为事情会有好转。嗯，我果然太天真了，问题依旧，而且cpu和内存也没降多少。</p>
+<p>好吧我承认这娃没救了，转战firefox。使用习惯不同，ui不习惯（虽然我套了一个fxchrome的皮），书签导入麻烦，没有满意的扩展。好吧好吧，谁让我没办法，一一忍了，然后内存和cpu占用也降下来了。</p>
+<p>嗯，你一定猜到结局了。我果然太天真了，过了一会又卡死了。。。。。。。。。wocao%7c$^389q&amp;*dj</p>
+<p>怒删firefox，然后在网上找其他解决办法。比如</p>
+<ul>
+<li><a href="http://tieba.baidu.com/p/2870702006" target="_blank" rel="noopener">elementaryos无故死机的情况大家遇见过吗</a></li>
+<li><a href="http://tieba.baidu.com/p/2713702964" target="_blank" rel="noopener">关于死机的问题</a></li>
+<li><a href="http://ruby-china.org/topics/13471" target="_blank" rel="noopener">Ubuntu 13.04 老是更新就死机怎么破？</a></li>
+<li><a href="http://www.elementaryupdate.com/2013/08/top-things-to-do-after-installing-luna.html" target="_blank" rel="noopener">Top Things To Do After Installing Luna</a></li>
+</ul>
+<p>基本上确定是内核的问题了，eos是基于ubuntu12.04的，内核版本为3.2，不支持hd4000的核心显卡，升级下内核版本就好了。</p>
+<p>所以只需要一句命令就好了：</p>
+<pre><code>sudo apt-get install linux-generic-lts-raring
+</code></pre><p>现在已经正常使用一整天了，依旧用chromium。。。</p>
+</div></article><article><header><h2><a href="/2013/11/30/配置多用户的虚拟主机/">配置多用户的虚拟主机</a></h2></header><div class="article-meta clearfix"><time class="left">2013 年 11 月 30 日</time><ul class="tags left"></ul><ul class="tags right"><li><a href="/tags/linux/">Linux</a></li></ul></div><div class="markdown-body"><p>一直想要个香港服务器，米国服务器太远，各种云间歇性抽风（sae抽得丧心病狂啊！！）。如果放微信接口，再加上还要curl国内的教务处，速度完全跟不上。 前两天看到v2ex上的locvps做活动，<a href="http://www.v2ex.com/t/89851" target="_blank" rel="noopener">香港1G 41元</a>，就咬咬牙从<a href="http://rpvhost.net" target="_blank" rel="noopener">RP主机</a>搬过去了。后来又拖了qwe7002一起合租，均摊下来20块一个月就还挺划算的。</p>
+<p>服务器的简单配置自不必细说，用一个<a href="https://github.com/lj2007331/lnmp" target="_blank" rel="noopener">lnmp脚本</a>半个小时搭完，有些不常用的服务可以再安装完成后先停止。麻烦点的就是多用户的权限控制了，我自己的数据和权限要跟qwe7002的完全分离，而当一个站点被黑时也不能影响全局。</p>
+<h4 id="文件"><a href="#文件" class="headerlink" title="文件"></a>文件</h4><p>先新增两个用户分别给予对应的文件权限。nginx会以同组用户www身份访问目录，所以建议将文件目录权限设为750或更低。要禁止某些文件或目录从web访问时,可以将其权限设为660（仅当前用户访问）。</p>
+<pre><code>adduser faceair
+passwd faceair   //设定用户密码
+chmod 750 /home/faceair -R
+</code></pre><h4 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h4><p>公用的mysql数据库提供了严格的多用户权限控制，使用phpmyadmin面板新建一个用户”给以 用户名<em> 开头的数据库 (username</em>%) 授予所有权限”,不给予全局权限就够了。</p>
+<pre><code>CREATE USER &apos;faceair&apos;@&apos;%&apos; IDENTIFIED BY &apos;***&apos;;GRANT USAGE ON *.* TO &apos;faceair&apos;@&apos;%&apos; IDENTIFIED BY &apos;***&apos; WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;GRANT ALL PRIVILEGES ON `faceair\_%`.* TO &apos;faceair&apos;@&apos;%&apos;;
+</code></pre><h4 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h4><p>默认nginx以www用户运行，为了能让nginx访问到用户文件，还要将www添加到对应用户的用户组，处理静态文件请求。</p>
+<pre><code>gpasswd -a www faceair
+</code></pre><p>通过lnmp安装包里面的vhost.sh可以添加nginx配置，配置添加后对文件权限还要重新修改。默认会添加配置到/usr/local/nginx/conf/vhost目录对应域名。</p>
+<h4 id="php-fpm"><a href="#php-fpm" class="headerlink" title="php-fpm"></a>php-fpm</h4><p>nginx本身不能处理PHP，它只是个web服务器。当接收到php请求后，需要转发到php-fpm对应的UNIX socket文件。修改对应域名的nginx配置。</p>
+<pre><code>location ~ .*\.(php|php5)?$  {
+    fastcgi_pass unix:/tmp/faceair-fpm.sock;
+    fastcgi_index index.php;
+    include fastcgi.conf;
+}
+</code></pre><p>给每个用户都建立单独的进程池,每个进程池表现为一个UNIX socket文件。修改/usr/local/php/etc/php-fpm.conf，添加一行。</p>
+<p><code>include = /usr/local/php/etc/pool.d/*.conf</code></p>
+<p>再添加目录/usr/local/php/etc/pool.d/，在目录中添加对应用户faceair.conf。</p>
+<pre><code>[faceair]
+user = faceair
+group = faceair
+listen = /tmp/faceair-fpm.sock
+listen.owner = faceair
+listen.group = faceair
+listen.mode = 0660
+
+pm = dynamic
+pm.max_children = 10
+pm.start_servers = 3
+pm.min_spare_servers = 1
+pm.max_spare_servers = 3
+</code></pre><p>基本配置就是这样了，最后重启nginx和php-pfm。</p>
+<pre><code>/usr/local/nginx/sbin/nginx -s reload
+kill -USR2 `cat /usr/local/php/var/run/php-fpm.pid`
+</code></pre><p>我再考虑怎么写个脚本来管理这些配置文件。</p>
+<p>参考：</p>
+<ul>
+<li><a href="http://jysperm.me/program/810/comment-page-1#comment-885" target="_blank" rel="noopener">http://jysperm.me/program/810/comment-page-1#comment-885</a></li>
+<li><a href="http://everet.org/2012/11/multi-user-nginx-php-server.html" target="_blank" rel="noopener">http://everet.org/2012/11/multi-user-nginx-php-server.html</a></li>
+</ul>
+</div></article><div class="archive-pagination"><div class="paginator"><span class="page-number current">1</span></div></div></div><div class="block-sidebar column one-fourth"><div class="widget tags"><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/summary/">总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/speech/">讲稿</a></li></ul></div><div class="widget archives"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">三月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li></ul></div><div class="widget text-content"><p>博客内容使用&nbsp;<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn">CC BY-NC-SA 3.0</a>&nbsp;授权发布。
+<br>
+Powered&nbsp;by&nbsp;<a href="http://hexo.io">Hexo</a>&nbsp;&&nbsp;<a href="https://github.com/jysperm/hexo-theme-simpleblock">SimpleBlock</a>&nbsp;.</p></div></div></div></div></body></html>

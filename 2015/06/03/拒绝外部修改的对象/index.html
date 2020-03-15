@@ -1,0 +1,52 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/avatar.png"><link rel="alternate" type="application/rss+xml" title="faceair 的博客" href="https://faceair.me/atom.xml"><link rel="stylesheet" href="/styles.css"><title>拒绝外部修改的对象 | faceair 的博客</title></head><body><div class="container"><div class="columns page-header"><h1>faceair 的博客</h1></div><div class="columns"><div class="navigation clearfix"><nav class="left"><a href="/" class="favicon"><img alt="faceair 的博客" src="/avatar.png"></a><a href="/">首页</a><a href="/about-me/">关于我</a></nav><nav class="right"><a href="/atom.xml">RSS</a></nav></div></div><div class="columns"><div class="block-body column three-fourths"><article><header><h2>拒绝外部修改的对象</h2></header><div class="article-meta clearfix"><time class="left">2015 年 6 月 3 日</time><ul class="tags left"></ul><ul class="tags right"><li><a href="/tags/nodejs/">Node.js</a></li></ul></div><div class="markdown-body"><p><code>document</code> 是 mongoose 的数据实例，它拥有一些比较有意思的特性</p>
+<ol>
+<li>实例拥有一些方法，能被正常调用</li>
+<li><code>console.log</code> 显示的是纯数据，不包含方法</li>
+<li>实例属性可以内部增加，但不能在外部增加</li>
+<li>实例属性在外部不可被覆写，也不能被删除</li>
+<li>实例在执行 <code>update</code> 方法后，属性也能被更新</li>
+</ol>
+<p>看起来，1 和 2 比较冲突，3、4 和 5 也比较冲突。所以要怎么实现呢？</p>
+<p>1、2 实现看起来比较简单，最简单的是把方法都添加到实例创建的原型上，这样创建的 <code>document</code> 实例的时候会自动继承原型上的方法，而在 <code>console.log</code> 实例的时候不会显示继承的属性，所以显示的结果会看起来非常干净。</p>
+<p>后面的 3、4、5 统称起来就是 <strong>实例可内部修改但不能被外部修改</strong> ，这个实现起来就麻烦了。</p>
+<p>创建一个<strong>不可被修改也不能被删除</strong>的对象非常地容易，将 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank" rel="noopener">Object.defineProperty</a> 中的 <code>configurable</code> 和 <code>writable</code> 都设为 <code>false</code> 就可以了。但是这样创建的对象是完全不能被修改的，更新属性的话没法搞。<br>要支持更新属性也行啊，把 <code>configurable</code> 和 <code>writable</code> 都设为 <code>true</code> … orz，这样就能外部修改了。</p>
+<p>还有个办法就是用 <code>getter</code>，听起来不错，但是实际使用的时候发现 <code>configurable</code> 不能设为 <code>false</code>，不然的话不能更新 <code>getter</code> 里面的数据，设为 <code>true</code> 以后数据虽然不能被更新但又能被删除。<br>而且，设置了 <code>getter</code> 以后，用 <code>console.log</code> 打印实例的时候属性会显示成 <code>[Getter]</code>，而不是实际值，这样跟 2 又冲突了。</p>
+<p>还有个办法 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/seal" target="_blank" rel="noopener">Object.seal</a> 可以密封对象。<strong>被密封后的对象不能添加新的属性，不能删除已有属性，以及不能修改已有属性的可枚举性、可配置性、可写性，但可以修改已有属性的值的对象</strong>。orz … 这里的修改并不能限制外部的。</p>
+<p>似乎可以综合一下，<code>Object.seal</code> 允许修改，<code>getter</code> 可以限制修改来源。</p>
+<p>而实际上 <code>getter</code> 的数据更新可以指定到一个内部变量，这样只用更改这个变量就可以更改这个属性了，而不用去直接改 <code>getter</code>，类似于做了一个映射。</p>
+<pre><code>class Model
+  constructor: (record) -&gt;
+    _.extend @, record: record
+
+    _.keys(record).map (key) =&gt;
+      Object.defineProperty @, key,
+        enumerable: true
+        configurable: false
+        get: -&gt;
+          @record[key]
+
+  update: (record) -&gt;
+    _.extend @, record: record
+</code></pre><p>这样处理的话已经成功了一部分了，再还要不允许往实例上添加属性，在构造函数里面加上 <code>Object.seal @</code> 就好了。</p>
+<p>后面的问题处理完了，但是前面的 1、2 又冲突了。添加的 <code>record</code> 属性会在 <code>console.log</code> 的时候显示出来，而添加的 <code>getter</code> 也会显示成了 <code>[Getter]</code>。</p>
+<p>去研究了下 mongoose 的实现，发现它在 <code>document</code> 的原型里面添加了一个 <a href="https://github.com/Automattic/mongoose/blob/8be119d1e240bd1004972d10da3f110a6f899b59/lib/document.js#L1915" target="_blank" rel="noopener">inspect</a> 方法。<br>我和逸川一起追溯了一下 <a href="https://github.com/joyent/node/blob/master/lib/console.js#L57" target="_blank" rel="noopener">console.log</a> 的在 node.js 中的实现，整个的流程就是</p>
+<ul>
+<li><code>console.log</code> 调用了 <code>util.format</code></li>
+<li>然后进而调用了 <code>util.inspect</code></li>
+<li><code>util.inspect</code> 又调用了 <code>formatValue</code></li>
+<li>然后是 <code>formatValue</code> 调用了传入 <code>console.log</code> 的参数的 <code>inspect</code> 方法</li>
+</ul>
+<p>所以，<strong><code>console.log</code> 的传入参数的 <code>inspect</code> 方法会直接影响 <code>console.log</code> 显示的内容</strong>。</p>
+<pre><code>class Display
+  constructor: -&gt;
+
+  inspect: -&gt;
+    return &apos;hello&apos;
+
+console.log new Display()  # 会显示 hello
+</code></pre><p>那我们再给我们的 Model 加上 <code>inspect</code> 方法，里面返回 <code>record</code> 的数据即可。</p>
+<p>这样我们就实现了一个 <strong>可内部修改但不能被外部修改</strong> 的对象了。</p>
+<p>完整的示例参见 <a href="https://github.com/faceair/cado" target="_blank" rel="noopener">cado</a>。</p>
+</div></article></div><div class="block-sidebar column one-fourth"><div class="widget tags"><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nodejs/">Node.js</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/php/">PHP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/summary/">总结</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/network/">网络</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/speech/">讲稿</a></li></ul></div><div class="widget archives"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">十一月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">三月 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li></ul></div><div class="widget text-content"><p>博客内容使用&nbsp;<a href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn">CC BY-NC-SA 3.0</a>&nbsp;授权发布。
+<br>
+Powered&nbsp;by&nbsp;<a href="http://hexo.io">Hexo</a>&nbsp;&&nbsp;<a href="https://github.com/jysperm/hexo-theme-simpleblock">SimpleBlock</a>&nbsp;.</p></div></div></div></div></body></html>
